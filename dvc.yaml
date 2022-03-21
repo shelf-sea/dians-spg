@@ -1,0 +1,30 @@
+stages:
+  spg:
+    vars:
+      - container:
+          out: /mnt/out
+          tmf: /mnt/in/TRACMASS_run.hdf5
+          ini: /mnt/in/column_initime.hdf5
+          spg: /mnt/in/spg.csv
+      - ../../params.yaml
+    cmd:
+      singularity run --no-home --cleanenv --containall
+        --bind $(realpath $(dvc root)/../..)/${data.hdf5}:${container.out}:rw
+        --bind $(realpath $(dvc root)/../..)/${data.tracmass_hdf5}:${container.tmf}:ro
+        --bind $(realpath $(dvc root)/../..)/${data.initime}:${container.ini}:ro
+        --bind $(realpath $(dvc root)/../..)/${data.spg_index}:${container.spg}:ro
+      ../../src/dians-${package_version}.sif create_column
+        --tracmass-hdf5=${container.tmf}
+        --spg-ssh-pca=${container.spg}
+        --initimecol=${container.ini}
+        --column-dst=${container.out}
+        --column=spg
+        --index-start-date="1993-01"
+        --index-end-date="2019-12"
+    deps:
+      - ../../${data.tracmass_hdf5}
+      - ../../${data.spg_index}
+      - ../../${data.initime}
+      - ../../src/dians-${package_version}.sif
+    outs:
+      - ../../${data.spg}
