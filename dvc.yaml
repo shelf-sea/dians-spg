@@ -12,7 +12,7 @@ stages:
         --bind $(realpath $(dvc root)/../..)/${data.hdf5}:${container.out}:rw
         --bind $(realpath $(dvc root)/../..)/${data.tracmass_hdf5}:${container.tmf}:ro
         --bind $(realpath $(dvc root)/../..)/${data.initime}:${container.ini}:ro
-        --bind $(realpath $(dvc root)/../..)/${data.spg_index}:${container.spg}:ro
+        --bind $(realpath $(dvc root)/../..)/${data.spg}:${container.spg}:ro
       ../../src/dians-${package_version}.sif create_column
         --tracmass-hdf5=${container.tmf}
         --spg-ssh-pca=${container.spg}
@@ -23,7 +23,7 @@ stages:
         --index-end-date="2019-12"
     deps:
       - ../../${data.tracmass_hdf5}
-      - ../../${data.spg_index}
+      - ../../${data.spg}
       - ../../${data.initime}
       - ../../src/dians-${package_version}.sif
     outs:
