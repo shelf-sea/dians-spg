@@ -21,6 +21,7 @@ stages:
       ../../src/dians-${package_version}.sif create_column
         --tracmass-hdf5=${container.tmf}
         --initimecol=${container.ini}
+        --params=${container.par}
         --column-dst=${container.out}
         --column=${column}
         --index-file=${container.spg}

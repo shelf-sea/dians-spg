@@ -1,0 +1,31 @@
+schema: '2.0'
+stages:
+  spg:
+    cmd: singularity run --no-home --cleanenv --containall --bind $(realpath $(dvc
+      root)/../..)/data/hdf5:/mnt/out:rw --bind $(realpath $(dvc root)/../..)/data/hdf5/TRACMASS_run.hdf5:/mnt/in/TRACMASS_run.hdf5:ro
+      --bind $(realpath $(dvc root)/../..)/data/hdf5/column_initime.hdf5:/mnt/in/column_initime.hdf5:ro
+      --bind $(realpath $(dvc root)/../..)/data/external/na-spg-ssh-pca/SSH_PCs_Monthly_199301_201912.csv:/mnt/in/spg.csv:ro
+      --bind $(realpath $(dvc root)/../..)/params.yaml:/params/params.yaml:ro ../../src/dians-v2022.2.2.sif
+      create_column --tracmass-hdf5=/mnt/in/TRACMASS_run.hdf5 --initimecol=/mnt/in/column_initime.hdf5
+      --params=/params/params.yaml --column-dst=/mnt/out --column=spg --index-file=/mnt/in/spg.csv
+      --index-start-month=1993-01 --index-end-month=2019-12
+    deps:
+    - path: ../../data/external/na-spg-ssh-pca/SSH_PCs_Monthly_199301_201912.csv
+      md5: 95f538f5a1dc478329d2dae67ad05466
+      size: 12083
+    - path: ../../data/hdf5/TRACMASS_run.hdf5
+      md5: 88673606f06aa422c2cd66cd698c29ec
+      size: 245650906248
+    - path: ../../data/hdf5/column_initime.hdf5
+      md5: 8f587a8b06d1fb24c903590942cebfb1
+      size: 40941823744
+    - path: ../../params.yaml
+      md5: 8b6643d4bd7bc94f065c9050be1a0a2f
+      size: 2783
+    - path: ../../src/dians-v2022.2.2.sif
+      md5: 984bebc96f85df7245c83f66f7efb1c4
+      size: 720789504
+    outs:
+    - path: ../../data/hdf5/column_spg.hdf5
+      md5: e1dd32a0bc477bfa5f1a75be461f7c51
+      size: 40941823744
